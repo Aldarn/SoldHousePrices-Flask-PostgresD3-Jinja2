@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import subprocess
 import os
 import re
@@ -52,7 +54,7 @@ BASE_UPLOAD_TO_DIR = "~/webapps/property/housepricehistory/housepricehistory"
 for root, subFolders, fileNames in os.walk(BASE_UPLOAD_FROM_DIR):
 	for fileName in fileNames:
 		filePath = os.path.join(root, fileName)
-		
+
 		if not inHiddenFolder(filePath):
 			if os.path.splitext(fileName)[1]:
 				relativePathMatch = re.match(r"^" + BASE_UPLOAD_FROM_DIR + r"/(.+?)$", filePath)
