@@ -28,6 +28,13 @@ def restartDjangoServer ():
 def makeDirs (path):
 	dirPaths = [os.path.join(BASE_UPLOAD_TO_DIR, dirPath) for dirPath in path.split("/")]
 
+	baseDir = BASE_UPLOAD_TO_DIR
+	dirPaths = []
+	for dirPath in path.split("/"):
+		actualDirPath = os.path.join(baseDir, dirPath)
+		dirPaths.append(actualDirPath)
+		baseDir = actualDirPath
+
 	if dirPaths is not None and len(dirPaths) > 1:
 		del dirPaths[len(dirPaths)-1] # Remove the file name
 
@@ -48,8 +55,8 @@ def makeDirs (path):
 			if not error:
 				print "Created dir " + dirPath + "..."
 
-BASE_UPLOAD_FROM_DIR = "../src/server/"
-BASE_UPLOAD_TO_DIR = "~/webapps/property/housepricehistory/housepricehistory"
+BASE_UPLOAD_FROM_DIR = "../src/server/housepricehistory"
+BASE_UPLOAD_TO_DIR = "/webapps/property/housepricehistory"
 
 for root, subFolders, fileNames in os.walk(BASE_UPLOAD_FROM_DIR):
 	for fileName in fileNames:
@@ -58,6 +65,7 @@ for root, subFolders, fileNames in os.walk(BASE_UPLOAD_FROM_DIR):
 		if not inHiddenFolder(filePath):
 			if os.path.splitext(fileName)[1]:
 				relativePathMatch = re.match(r"^" + BASE_UPLOAD_FROM_DIR + r"/(.+?)$", filePath)
+				print filePath
 				if relativePathMatch:
 					makeDirs(relativePathMatch.group(1))
 

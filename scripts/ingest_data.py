@@ -56,9 +56,9 @@ def checkPrintProgress(currentCount, total):
 		print '***** ' * 10 + '\n'
 
 def main():
-	with open("../full_sold_data.csv", 'r') as fileHandle:
+	with open("../feb_2015_sold_data.csv", 'r') as fileHandle:
 		processedCount = 0
-		totalEntries = x
+		totalEntries = 83245
 		currentInserts = []
 		for entry in fileHandle:
 			checkPrintProgress(processedCount, totalEntries)
