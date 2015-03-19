@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_jinja'
+    'django_jinja',
+    'housepricehistory'
 )
 
 TEMPLATE_LOADERS = (
@@ -66,7 +67,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'housepricehistory',
 	    'USER': 'postgres',
-	    'PASSWORD': 'hello',
+	    'PASSWORD': 'fakefake',
 	    'HOST': 'localhost',
 	    'POST': ''
     }
