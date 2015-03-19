@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import psycopg2
+
 DATA_TO_CSV_COLUMN = {
 	"uid": 0,
 	"price": 1,
@@ -17,26 +19,28 @@ DATA_TO_CSV_COLUMN = {
 	"county": 13
 }
 
-def insertEntries(entries):
+def insertEntries(db, cursor, entries):
 	"""
 	Inserts a batch of entries.
 	:param entries: List of entry insert SQLs.
 	"""
-	# TODO: Concat the sql's
-	# TODO: Run the sql
-	# TODO: Commit it
-	pass
+	# Run the SQL
+	cursor.execute("INSERT INTO housepricehistory_soldproperty ('id', '%s') VALUES %s;",
+		("', '".join(DATA_TO_CSV_COLUMN.keys()), entries.join(",")))
+	db.commit()
 
-def getDataEntryInsertSQL(entry):
+def getDataEntrySQL(entry):
 	"""
 	Gets the insert SQL for an entry.
 	:param entry: The entry to get the SQL for.
 	:return: The insert SQL for the entry.
 	"""
-	entryData = entry.split(",")
-	return """INSERT INTO sold_property ('id', '%s')
-		   VALUES ('', '%s')""" \
-		   % ("', '".join(DATA_TO_CSV_COLUMN.keys()), "', '".join([entryData[i] for i in DATA_TO_CSV_COLUMN.values()]))
+	entryData = entry.replace('"', '').split(",") # Remove all quotes and split into values
+	entryData[0].replace('{', '').replace('}', '') # Remove braces from the uid
+
+	# TODO: Convert the date into a timestamp
+
+	return "('%s')" % "', '".join([entryData[i] for i in DATA_TO_CSV_COLUMN.values()])
 
 def checkPrintProgress(currentCount, total):
 	"""
@@ -55,19 +59,25 @@ def checkPrintProgress(currentCount, total):
 		print message.rjust(30 + len(message) / 2)
 		print '***** ' * 10 + '\n'
 
-def main():
-	with open("../feb_2015_sold_data.csv", 'r') as fileHandle:
+def main(dataFile = "../feb_2015_sold_data.csv"):
+	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake")
+	cursor = db.cursor()
+
+	with open(dataFile, 'r') as fileHandle:
 		processedCount = 0
 		totalEntries = 83245
 		currentInserts = []
 		for entry in fileHandle:
 			checkPrintProgress(processedCount, totalEntries)
-			currentInserts.append(getDataEntryInsertSQL(entry))
+			currentInserts.append(getDataEntrySQL(entry))
 
 			# TODO: Replace arbitrary insert count with a check for the maximum insert sql length
 			if len(currentInserts) == 100:
-				insertEntries(currentInserts)
+				insertEntries(db, cursor, currentInserts)
 				del currentInserts[:]
+
+	cursor.close()
+	db.close()
 
 if __name__ == '__main__':
 	main()
