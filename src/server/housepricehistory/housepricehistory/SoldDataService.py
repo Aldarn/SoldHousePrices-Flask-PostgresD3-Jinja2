@@ -1,7 +1,7 @@
 import time
-from src.server.housepricehistory.housepricehistory.models import SoldProperty
+from models import SoldProperty
 
-def getAllAveragePriceData(self):
+def getAllAveragePriceData():
 	soldProperty = SoldProperty.objects.all().order_by('date')
 	dateAverages = {}
 	for property in soldProperty:
@@ -24,5 +24,5 @@ def getAllAveragePriceData(self):
 def getAverage(averageDict):
 	return int(float(averageDict["total"]) / float(averageDict["count"]))
 
-def getAveragePriceData(self, startTimestamp, endTimestamp):
+def getAveragePriceData(startTimestamp, endTimestamp):
 	pass

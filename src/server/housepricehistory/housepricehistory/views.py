@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-import services.SoldDataService as SoldDataService
+
+import SoldDataService
+
 
 def index(request):
 	"""
@@ -23,7 +25,7 @@ def averagePrices(request):
 	:param request: HTTP Request
 	:return: history JSON
 	"""
-	if request.method == 'GET':
+	if request.method == 'GET' and "start" in request.GET:
 		start = request.GET["start"]
 		end = request.GET["end"]
 		response = SoldDataService.getAveragePriceData(start, end)

@@ -27,8 +27,7 @@ def insertEntries(db, cursor, entries):
 	:param entries: List of entry insert SQLs.
 	"""
 	# Run the SQL
-	cursor.execute("INSERT INTO housepricehistory_soldproperty ('id', '%s') VALUES %s;",
-		("', '".join(DATA_TO_CSV_COLUMN.keys()), entries.join(",")))
+	cursor.execute("INSERT INTO housepricehistory_soldproperty ('id', '%s') VALUES %s;", ("', '".join(DATA_TO_CSV_COLUMN.keys()), ",".join(entries)))
 	db.commit()
 
 def getDataEntrySQL(entry):
@@ -41,9 +40,9 @@ def getDataEntrySQL(entry):
 	entryData[0].replace('{', '').replace('}', '') # Remove braces from the uid
 
 	# Convert the date into a timestamp
-	entryData[DATA_TO_CSV_COLUMN["date"]] = time.mktime(datetime.datetime.strptime(entryData[DATA_TO_CSV_COLUMN["date"]], "%d/%m/%Y hh:mm").timetuple())
+	entryData[DATA_TO_CSV_COLUMN["date"]] = time.mktime(datetime.datetime.strptime(entryData[DATA_TO_CSV_COLUMN["date"]], "%Y-%m-%d %H:%M").timetuple())
 
-	return "('%s')" % "', '".join([entryData[i] for i in DATA_TO_CSV_COLUMN.values()])
+	return "('%s')" % "', '".join([str(entryData[i]) for i in DATA_TO_CSV_COLUMN.values()])
 
 def checkPrintProgress(currentCount, total):
 	"""
@@ -62,8 +61,8 @@ def checkPrintProgress(currentCount, total):
 		print message.rjust(30 + len(message) / 2)
 		print '***** ' * 10 + '\n'
 
-def main(dataFile = "../feb_2015_sold_data.csv"):
-	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake")
+def main(dataFile = "data/feb_2015_sold_data.csv"):
+	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake host=localhost")
 	cursor = db.cursor()
 
 	with open(dataFile, 'r') as fileHandle:
