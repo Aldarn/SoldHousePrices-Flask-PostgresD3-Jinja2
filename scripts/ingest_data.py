@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import psycopg2
+import time
+import datetime
 
 DATA_TO_CSV_COLUMN = {
 	"uid": 0,
@@ -38,7 +40,8 @@ def getDataEntrySQL(entry):
 	entryData = entry.replace('"', '').split(",") # Remove all quotes and split into values
 	entryData[0].replace('{', '').replace('}', '') # Remove braces from the uid
 
-	# TODO: Convert the date into a timestamp
+	# Convert the date into a timestamp
+	entryData[DATA_TO_CSV_COLUMN["date"]] = time.mktime(datetime.datetime.strptime(entryData[DATA_TO_CSV_COLUMN["date"]], "%d/%m/%Y hh:mm").timetuple())
 
 	return "('%s')" % "', '".join([entryData[i] for i in DATA_TO_CSV_COLUMN.values()])
 
