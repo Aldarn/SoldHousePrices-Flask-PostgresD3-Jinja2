@@ -3,6 +3,7 @@
 import subprocess
 import os
 import re
+import sys
 from ssh import SSHClient
 
 def inHiddenFolder (path):
@@ -55,17 +56,19 @@ def makeDirs (path):
 			if not error:
 				print "Created dir " + dirPath + "..."
 
+IGNORE_FILE_TYPES = ["pyc"]
 BASE_UPLOAD_FROM_DIR = "../src/server/housepricehistory"
 BASE_UPLOAD_TO_DIR = "/webapps/property/housepricehistory"
+codeOnly = True if len(sys.argv) > 1 and sys.argv[1] == "-c" else False
 
 for root, subFolders, fileNames in os.walk(BASE_UPLOAD_FROM_DIR):
 	for fileName in fileNames:
 		filePath = os.path.join(root, fileName)
 
 		if not inHiddenFolder(filePath):
-			if os.path.splitext(fileName)[1]:
+			fileExtension = os.path.splitext(fileName)[1]
+			if fileExtension and fileExtension not in IGNORE_FILE_TYPES and (not codeOnly or fileExtension == ".py"):
 				relativePathMatch = re.match(r"^" + BASE_UPLOAD_FROM_DIR + r"/(.+?)$", filePath)
-				print filePath
 				if relativePathMatch:
 					makeDirs(relativePathMatch.group(1))
 
