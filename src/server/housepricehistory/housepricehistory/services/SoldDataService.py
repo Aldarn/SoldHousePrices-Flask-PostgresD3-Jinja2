@@ -1,8 +1,12 @@
 import time
-from models import SoldProperty
+import logging
+import getpass
+from ..models import SoldProperty
+
+logger = logging.getLogger(__name__)
 
 def getAllAveragePriceData():
-	soldProperty = SoldProperty.objects.all().order_by('date')
+	soldProperty = SoldProperty.objects.all().order_by('-date')[:1]
 	dateAverages = {}
 	for property in soldProperty:
 		propertyDay = time.strftime("%d/%m/%Y")
@@ -13,6 +17,8 @@ def getAllAveragePriceData():
 			else:
 				dateAverages[propertyDay][property.type]["total"] = property.price
 				dateAverages[propertyDay][property.type]["count"] = 1
+
+	logger.debug("date averages: %s" % dateAverages)
 
 	data = "Date\tFlats\tTerraced\tDetached\tSemi-Detached\n"
 	for date, averages in dateAverages.iteritems():
