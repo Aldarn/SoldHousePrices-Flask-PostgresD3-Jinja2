@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-import SoldDataService
+from services import SoldDataService
 
 
 def index(request):
