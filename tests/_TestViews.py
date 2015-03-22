@@ -3,7 +3,7 @@
 import unittest
 from src.server.housepricehistory.housepricehistory.views import *
 
-class TestIngestScript(unittest.TestCase):
+class TestViews(unittest.TestCase):
 	def testIndex(self):
 		self.fail()
 

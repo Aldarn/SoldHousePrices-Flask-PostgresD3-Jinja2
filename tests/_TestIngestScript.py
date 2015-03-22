@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 
 import unittest
-from scripts.ingest_data import getDataEntryInsertSQL, checkPrintProgress, insertEntries, main as ingest_data_main
+from scripts.ingest_data import getFormattedEntry, checkPrintProgress, insertEntries, main as ingest_data_main
 
 class TestIngestScript(unittest.TestCase):
 	def testInsertEntries(self):
