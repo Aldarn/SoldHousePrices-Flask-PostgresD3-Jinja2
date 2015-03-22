@@ -16,3 +16,10 @@ CREATE TABLE "housepricehistory_soldproperty" (
     "county" varchar(255) NOT NULL
 );
 COMMIT;
+
+BEGIN;
+CREATE INDEX "housepricehistory_soldproperty_uid_like" ON "housepricehistory_soldproperty" ("uid" varchar_pattern_ops);
+CREATE INDEX "housepricehistory_soldproperty_date" ON "housepricehistory_soldproperty" ("date");
+CREATE INDEX "housepricehistory_soldproperty_postcode" ON "housepricehistory_soldproperty" ("postcode");
+CREATE INDEX "housepricehistory_soldproperty_postcode_like" ON "housepricehistory_soldproperty" ("postcode" varchar_pattern_ops);
+COMMIT;
