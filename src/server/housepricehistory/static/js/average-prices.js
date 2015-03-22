@@ -1,10 +1,10 @@
-// Taken from http://bl.ocks.org/mbostock/3884955#index.html
+// Modified from http://bl.ocks.org/mbostock/3884955#index.html
 function drawAveragePricesGraph(dataUrl) {
 	var margin = {top: 20, right: 80, bottom: 30, left: 50},
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
 
-	var parseDate = d3.time.format("%Y%m%d").parse;
+	var parseDate = d3.time.format("%d/%m/%Y").parse;
 
 	var x = d3.time.scale()
 		.range([0, width]);
@@ -23,11 +23,12 @@ function drawAveragePricesGraph(dataUrl) {
 		.orient("left");
 
 	var line = d3.svg.line()
-		.interpolate("basis")
+		.interpolate("cardinal")
 		.x(function(d) { return x(d.date); })
-		.y(function(d) { return y(d.temperature); });
+		.y(function(d) { return y(d.temperature); })
+		.defined(function(d) { return d.temperature; });
 
-	var svg = d3.select("average").append("svg")
+	var svg = d3.select("#average").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
@@ -56,10 +57,47 @@ function drawAveragePricesGraph(dataUrl) {
 		d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
 	  ]);
 
+	  var city = svg.selectAll(".city")
+		  .data(cities)
+		  .enter().append("g")
+		  .attr("class", "city");
+
+	  city.append("path")
+		  .attr("class", "line")
+		  .attr("d", function(d) { return line(d.values); })
+		  .style("stroke", function(d) { return color(d.name); });
+
+	  var point = city.append("g")
+		  .attr("class", "line-point");
+
+		point.selectAll('circle')
+		.data(function(d){ return d.values})
+		.enter().append('circle')
+		.attr("cx", function(d) { return x(d.date) })
+		.attr("cy", function(d) { return y(d.temperature) })
+		.attr("r", 3.5)
+		.style("fill", "white")
+		.style("stroke", function(d) { return color(this.parentNode.__data__.name); })
+		.style("visibility", function(d) { return d.temperature > 0 ? "visible" : "hidden" });
+
+	  city.append("text")
+		  .datum(function(d) { return {name: d.name, value: getLastValue(d.values)}; })
+		  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+		  .attr("x", 5)
+		  .attr("dy", ".35em")
+		  .style("font-weight", "bold")
+		  .text(function(d) { return d.name; });
+
 	  svg.append("g")
 		  .attr("class", "x axis")
 		  .attr("transform", "translate(0," + height + ")")
-		  .call(xAxis);
+		  .call(xAxis)
+		.append("text")
+		  .attr("y", 6)
+		  .attr("dy", ".71em")
+		  .style("text-anchor", "end")
+		  .style("font-weight", "bold")
+		  .text("Date");
 
 	  svg.append("g")
 		  .attr("class", "y axis")
@@ -69,23 +107,16 @@ function drawAveragePricesGraph(dataUrl) {
 		  .attr("y", 6)
 		  .attr("dy", ".71em")
 		  .style("text-anchor", "end")
-		  .text("Temperature (ºF)");
-
-	  var city = svg.selectAll(".city")
-		  .data(cities)
-		.enter().append("g")
-		  .attr("class", "city");
-
-	  city.append("path")
-		  .attr("class", "line")
-		  .attr("d", function(d) { return line(d.values); })
-		  .style("stroke", function(d) { return color(d.name); });
-
-	  city.append("text")
-		  .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-		  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
-		  .attr("x", 3)
-		  .attr("dy", ".35em")
-		  .text(function(d) { return d.name; });
+		  .style("font-weight", "bold")
+		  .text("Price (£)");
 	});
+}
+
+function getLastValue(values) {
+	for(i = values.length - 1; i > 0; i--) {
+		if(values[i].temperature > 0) {
+			return values[i];
+		}
+	}
+	return 0;
 }
