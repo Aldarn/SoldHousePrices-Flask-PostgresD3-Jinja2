@@ -1,5 +1,0 @@
-- graph values should be bulk calculated and cached based on historic data
-- more historic data should be loaded
-- type of property text should be drawn on top of lines
-- scale of graphs should respond better to the width and density of the data set
-- mechanism for choosing window of data should be improved, like http://bl.ocks.org/DStruths/9c042e3a6b66048b5bd4

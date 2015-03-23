@@ -75,7 +75,7 @@ def checkPrintProgress(currentCount, total):
 		print message.rjust(30 + len(message) / 2)
 		print '***** ' * 10 + '\n'
 
-def main(dataFile = "data/feb_2015_sold_data.csv"):
+def main(dataFile = "../data/feb_2015_sold_data.csv"):
 	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake host=localhost")
 	cursor = db.cursor()
 

@@ -1,0 +1,24 @@
+Overview of Solution
+--------------------
+
+
+
+What I Would Change With More Time
+----------------------------------
+
+
+
+Limitations
+-----------
+
+- graph values should be bulk calculated and cached based on historic data
+- more historic data should be loaded
+- type of property text should be drawn on top of lines
+- scale of graphs should respond better to the width and density of the data set
+- mechanism for choosing window of data should be improved, like http://bl.ocks.org/DStruths/9c042e3a6b66048b5bd4
+- if a category has no values the name text floats in the top left instead of not being added
+- over large data sets the dots obscure the results and outliers also make it uneven
+- data sets with many missing values can look strange; 'basis' lines may look better than cardinal here
+- windows of data less than a year don't show the year on the x axis
+- no mocking has severely limited test scope
+- no mechanism for creating a temporary database has severely limited test scope
