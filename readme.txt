@@ -25,5 +25,6 @@ Running the Application
 Tests
 -----
 
-To run all the tests, execute nosetests from a command line interface when the
-current directory is the same as the one this file is in.
+To run all the tests, ensure django is setup and running, navigate to the base app directory and run the following:
+
+./manage.py test

@@ -6,7 +6,10 @@ Overview of Solution
 What I Would Change With More Time
 ----------------------------------
 
-
+- ingest script should make use of django models, drop direct use of postgres
+- should have separate tables for calculated graph data
+- ingest script should populate aforementioned graph data tables
+- caching of graph data of some description e.g. redis
 
 Limitations
 -----------
