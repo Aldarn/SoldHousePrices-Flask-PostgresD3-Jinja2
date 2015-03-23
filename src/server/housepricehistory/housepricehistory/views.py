@@ -1,8 +1,6 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-
 from services import SoldDataService
-
 
 def index(request):
 	"""
@@ -15,9 +13,6 @@ def index(request):
 
 def indexImproved(request):
 	return HttpResponse(render_to_string('history-improved.jinja'))
-
-def jinja(request):
-	return HttpResponse(render_to_string('jinja.jinja'))
 
 def averagePrices(request):
 	"""
