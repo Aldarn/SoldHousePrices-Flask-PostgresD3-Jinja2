@@ -5,11 +5,18 @@
 		<script src="/static/js/d3.min.js" charset="utf-8"></script>
 		<script src="/static/js/jquery-1.11.2.min.js" charset="utf-8"></script>
 		<script src="/static/js/average-prices.js" charset="utf-8"></script>
+		<script src="/static/js/event-handlers.js" charset="utf-8"></script>
 		<link rel="stylesheet" href="/static/css/style.css"/>
 	</head>
 	<body>
 		<h1>Graph of average sold house prices in the UK</h1>
 
+		<form id="averageForm">
+			Postcode: <input type="text" name="postCode"/>
+			Date From: <input type="text" name="start"/>
+			Date To: <input type="text" name="end"/>
+			<input type="submit" name="reloadAveragesButton" value="RefreshGraph"/>
+		</form>
 		<div id="average"></div>
 		<script>
 			drawAveragePricesGraph("/averagePrices");

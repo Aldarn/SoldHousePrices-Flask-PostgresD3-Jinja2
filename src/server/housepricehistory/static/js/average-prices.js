@@ -1,6 +1,6 @@
 // Modified from http://bl.ocks.org/mbostock/3884955#index.html
 function drawAveragePricesGraph(dataUrl) {
-	var margin = {top: 20, right: 80, bottom: 30, left: 50},
+	var margin = {top: 20, right: 80, bottom: 30, left: 60},
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
 
@@ -92,12 +92,6 @@ function drawAveragePricesGraph(dataUrl) {
 		  .attr("class", "x axis")
 		  .attr("transform", "translate(0," + height + ")")
 		  .call(xAxis)
-		.append("text")
-		  .attr("y", 6)
-		  .attr("dy", ".71em")
-		  .style("text-anchor", "end")
-		  .style("font-weight", "bold")
-		  .text("Date");
 
 	  svg.append("g")
 		  .attr("class", "y axis")

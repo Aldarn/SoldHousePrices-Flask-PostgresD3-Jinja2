@@ -18,3 +18,7 @@ body {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.averageForm {
+  padding: 5px;
+}
