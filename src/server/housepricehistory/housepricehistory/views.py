@@ -28,10 +28,14 @@ def averagePrices(request):
 	:param request: HTTP Request.
 	:return: Average sold prices TSV.
 	"""
-	if request.method == 'GET' and "start" in request.GET and "end" in request.GET:
-		start = request.GET["start"]
-		end = request.GET["end"]
-		response = SoldDataService.getAveragePriceData(start, end)
+	# Remove empty get keys
+	request.GET = dict((k, v) for k, v in request.GET.iteritems() if v)
+
+	if request.method == 'GET' and len(request.GET) > 0:
+		start = request.GET.get("start", "01-01-1970")
+		end = request.GET.get("end", "19-01-2038")
+		postCode = request.GET.get("postCode", None)
+		response = SoldDataService.getAveragePriceData(start, end, postCode)
 	else:
 		response = SoldDataService.getAllAveragePriceData()
 
