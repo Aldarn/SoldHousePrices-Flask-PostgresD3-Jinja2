@@ -1,3 +1,7 @@
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 import logging
 import time
 import datetime
@@ -19,7 +23,11 @@ def getAllAveragePriceData():
 	cursor.execute("SELECT AVG(price) AS average, type, date(to_timestamp(date)) AS date FROM housepricehistory_soldproperty "
 				   "GROUP BY date, type ORDER BY date")
 
-	return _createDataTSVFromAverages(_dictFetchAll(cursor))
+	averages = _dictFetchAll(cursor)
+	if len(averages) == 0:
+		return "No results."
+
+	return _createDataTSVFromAverages(averages)
 
 def getAveragePriceData(startDate, endDate, postCode):
 	"""
@@ -106,51 +114,3 @@ def _dictFetchAll(cursor):
 		dict(zip([col[0] for col in desc], row))
 		for row in cursor.fetchall()
 	]
-
-############
-# Old Code #
-############
-
-def __getDailyValues(properties):
-	"""
-	Gets the total sold price value and count for each type of property for each day.
-
-	:param properties: The property objects.
-	:return: Nested dictionary of property week:property type:total/count.
-	"""
-	# Create a date averages dictionary that defaults to holding prices and counts for different property types for each day
-	dateAverages = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
-
-	# Populate the date averages
-	for property in properties:
-		propertyDay = int((datetime.datetime.fromtimestamp(property.date).date() - datetime.date(1970, 1, 1)).total_seconds())
-		dateAverages[propertyDay][property.type]["total"] += property.price
-		dateAverages[propertyDay][property.type]["count"] += 1
-
-	return dateAverages
-
-def __createDataTSV(dailyValues):
-	"""
-	Creates TSV data for the given daily values.
-
-	:param dailyValues: The daily values to create the data from.
-	:return: TSV data.
-	"""
-	data = "date\tFlats\tTerraced\tDetached\tSemi-Detached\n"
-	for date in sorted(dailyValues):
-		averages = dailyValues[date]
-		data += "%s\t%s\t%s\t%s\t%s\n" % (datetime.datetime.fromtimestamp(date).strftime("%d/%m/%Y"), __getAverage(averages["F"]), __getAverage(averages["T"]),
-			__getAverage(averages["D"]), __getAverage(averages["S"]))
-
-	return data
-
-def __getAverage(averageDict):
-	"""
-	Gets the average (mean) for the given dictionary containing the total and count.
-
-	:param averageDict: Average dictionary.
-	:return: Mean value or 0 if no values in dict.
-	"""
-	if len(averageDict) == 0:
-		return 0
-	return int(float(averageDict["total"]) / float(averageDict["count"]))

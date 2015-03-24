@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 import psycopg2
 import time
 import datetime
@@ -75,10 +79,7 @@ def checkPrintProgress(currentCount, total):
 		print message.rjust(30 + len(message) / 2)
 		print '***** ' * 10 + '\n'
 
-def main(dataFile = "../data/feb_2015_sold_data.csv"):
-	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake host=localhost")
-	cursor = db.cursor()
-
+def main(dataFile, db, cursor):
 	with open(dataFile, 'r') as fileHandle:
 		processedCount = 0
 		totalEntries = 83245
@@ -92,12 +93,19 @@ def main(dataFile = "../data/feb_2015_sold_data.csv"):
 			currentEntries.append(getFormattedEntry(entry))
 
 			# TODO: Replace arbitrary insert count with a check for the maximum insert sql length
-			if len(currentEntries) == 1:
+			if len(currentEntries) == 100:
 				insertEntries(db, cursor, currentEntries)
 				del currentEntries[:]
 
-	cursor.close()
-	db.close()
+		# Insert any remaining entries
+		if len(currentEntries) > 0:
+			insertEntries(db, cursor, currentEntries)
 
 if __name__ == '__main__':
-	main()
+	db = psycopg2.connect("dbname=housepricehistory user=postgres password=fakefake host=localhost")
+	cursor = db.cursor()
+
+	main("../../data/feb_2015_sold_data.csv", db, cursor)
+
+	cursor.close()
+	db.close()
