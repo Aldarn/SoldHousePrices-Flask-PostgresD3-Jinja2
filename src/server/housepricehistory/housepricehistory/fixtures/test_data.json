@@ -1,0 +1,21 @@
+[
+  {
+    "model": "housepricehistory.SoldProperty",
+    "pk": "uid",
+    "fields": {
+      "price": 10,
+      "date": 1421712000,
+      "postcode": "SW12 8ER",
+      "type": "T",
+      "isold": false,
+      "duration": "L",
+      "paon": "paon",
+      "saon": "saon",
+      "street": "street",
+      "locality": "locality",
+      "town": "town",
+      "district": "district",
+      "county": "county"
+    }
+  }
+]

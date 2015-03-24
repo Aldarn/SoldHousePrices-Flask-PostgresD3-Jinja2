@@ -1,10 +1,16 @@
 #!/usr/bin/python2.7
 
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 from django.utils import unittest
 from django.test import TestCase
-from ..housepricehistory.views import averagePrices
+from ..views import averagePrices
 
 class TestViews(TestCase):
+	fixtures = ['test_data.json']
+
 	def testAveragePrices(self):
 		request = MockRequest({}, 'GET')
 		# -------------------------------------------------------

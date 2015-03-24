@@ -1,11 +1,17 @@
 #!/usr/bin/python2.7
 
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 from django.utils import unittest
 from django.test import TestCase
-from ..housepricehistory.services.SoldDataService import getAveragePriceData, \
+from ..services.SoldDataService import getAveragePriceData, \
 	_createDataTSVFromAverages, _getTSVDataLine
 
 class TestSoldDataService(TestCase):
+	fixtures = ['test_data.json']
+
 	def testGetAveragePriceData(self):
 		startDate = "01-01-2015"
 		endDate = "01-02-2015"
