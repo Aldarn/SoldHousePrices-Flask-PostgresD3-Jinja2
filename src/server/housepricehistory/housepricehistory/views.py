@@ -1,3 +1,7 @@
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from services import SoldDataService

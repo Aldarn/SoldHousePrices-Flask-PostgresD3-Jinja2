@@ -1,3 +1,7 @@
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 import views
 from django.conf.urls import patterns, include, url
 from django.contrib import admin

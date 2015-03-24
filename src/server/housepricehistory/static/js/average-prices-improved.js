@@ -1,3 +1,7 @@
+//
+// Copyright 2015 Benjamin David Holmes, All rights reserved.
+//
+
 function drawAveragePricesGraph(dataUrl) {
 var margin = {top: 20, right: 200, bottom: 100, left: 50},
     margin2 = { top: 430, right: 10, bottom: 20, left: 40 },

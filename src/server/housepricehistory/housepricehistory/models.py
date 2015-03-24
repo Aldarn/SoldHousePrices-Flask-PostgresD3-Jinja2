@@ -1,3 +1,7 @@
+#
+# Copyright 2015 Benjamin David Holmes, All rights reserved.
+#
+
 from django.db import models
 
 class SoldProperty(models.Model):

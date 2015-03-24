@@ -1,3 +1,7 @@
+//
+// Copyright 2015 Benjamin David Holmes, All rights reserved.
+//
+
 // Modified from http://bl.ocks.org/mbostock/3884955#index.html
 function drawAveragePricesGraph(dataUrl) {
 	var margin = {top: 20, right: 80, bottom: 30, left: 60},
@@ -25,8 +29,8 @@ function drawAveragePricesGraph(dataUrl) {
 	var line = d3.svg.line()
 		.interpolate("cardinal")
 		.x(function(d) { return x(d.date); })
-		.y(function(d) { return y(d.temperature); })
-		.defined(function(d) { return d.temperature; });
+		.y(function(d) { return y(d.price); })
+		.defined(function(d) { return d.price; });
 
 	var svg = d3.select("#average").append("svg")
 		.attr("width", width + margin.left + margin.right)
@@ -41,11 +45,11 @@ function drawAveragePricesGraph(dataUrl) {
 		d.date = parseDate(d.date);
 	  });
 
-	  var cities = color.domain().map(function(name) {
+	  var propertyTypes = color.domain().map(function(name) {
 		return {
 		  name: name,
 		  values: data.map(function(d) {
-			return {date: d.date, temperature: +d[name]};
+			return {date: d.date, price: +d[name]};
 		  })
 		};
 	  });
@@ -53,36 +57,36 @@ function drawAveragePricesGraph(dataUrl) {
 	  x.domain(d3.extent(data, function(d) { return d.date; }));
 
 	  y.domain([
-		d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-		d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
+		d3.min(propertyTypes, function(c) { return d3.min(c.values, function(v) { return v.price; }); }),
+		d3.max(propertyTypes, function(c) { return d3.max(c.values, function(v) { return v.price; }); })
 	  ]);
 
-	  var city = svg.selectAll(".city")
-		  .data(cities)
+	  var propertyType = svg.selectAll(".propertyType")
+		  .data(propertyTypes)
 		  .enter().append("g")
-		  .attr("class", "city");
+		  .attr("class", "propertyType");
 
-	  city.append("path")
+	  propertyType.append("path")
 		  .attr("class", "line")
 		  .attr("d", function(d) { return line(d.values); })
 		  .style("stroke", function(d) { return color(d.name); });
 
-	  var point = city.append("g")
+	  var point = propertyType.append("g")
 		  .attr("class", "line-point");
 
 		point.selectAll('circle')
 		.data(function(d){ return d.values})
 		.enter().append('circle')
 		.attr("cx", function(d) { return x(d.date) })
-		.attr("cy", function(d) { return y(d.temperature) })
+		.attr("cy", function(d) { return y(d.price) })
 		.attr("r", 3.5)
 		.style("fill", "white")
 		.style("stroke", function(d) { return color(this.parentNode.__data__.name); })
-		.style("visibility", function(d) { return d.temperature > 0 ? "visible" : "hidden" });
+		.style("visibility", function(d) { return d.price > 0 ? "visible" : "hidden" });
 
-	  city.append("text")
+	  propertyType.append("text")
 		  .datum(function(d) { return {name: d.name, value: getLastValue(d.values)}; })
-		  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+		  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.price) + ")"; })
 		  .attr("x", 5)
 		  .attr("dy", ".35em")
 		  .style("font-weight", "bold")
@@ -108,7 +112,7 @@ function drawAveragePricesGraph(dataUrl) {
 
 function getLastValue(values) {
 	for(i = values.length - 1; i > 0; i--) {
-		if(values[i].temperature > 0) {
+		if(values[i].price > 0) {
 			return values[i];
 		}
 	}
