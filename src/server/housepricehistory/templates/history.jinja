@@ -12,14 +12,18 @@
 		<h1>Graph of average sold house prices in the UK</h1>
 
 		<form id="averageForm">
-			Postcode: <input type="text" name="postCode"/>
-			Date From: <input type="text" name="start"/>
-			Date To: <input type="text" name="end"/>
-			<input type="submit" name="reloadAveragesButton" value="RefreshGraph"/>
+			Postcode: <input type="text" name="postCode" placeholder="e.g. SW12"/>
+			Date From: <input type="text" name="start" placeholder="e.g. 01-01-2014"/>
+			Date To: <input type="text" name="end" placeholder="e.g. 01-03-2015"/>
+			<input type="submit" name="reloadAveragesButton" value="Refresh Graph"/>
 		</form>
 		<div id="average"></div>
 		<script>
 			drawAveragePricesGraph("/averagePrices");
 		</script>
+
+		<p>
+			Copyright 2015 Benjamin David Holmes, All rights reserved.
+		</p>
 	</body>
 </html>
