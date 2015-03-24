@@ -28,3 +28,7 @@ Tests
 To run all the tests, ensure django is setup and running, navigate to the base app directory and run the following:
 
 ./manage.py test
+
+
+
+Copyright 2015 Benjamin David Holmes, All rights reserved.
