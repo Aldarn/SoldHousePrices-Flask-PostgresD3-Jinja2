@@ -1,7 +1,10 @@
 About
 -----
 
-A simple web application designed to ingesting monthly price paid data from the UK government land registry and transform it into a filterable graph of average prices for each property type over time. The data can be found at http://data.gov.uk/dataset/land-registry-monthly-price-paid-data.
+A simple web application designed to ingesting monthly price paid data from 
+the UK government land registry and transform it into a filterable graph of 
+average prices for each property type over time. The data can be found at 
+http://data.gov.uk/dataset/land-registry-monthly-price-paid-data.
 
 Installation
 ------------
